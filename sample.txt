@@ -1,2 +1,3 @@
 start file
 second text
+third example
