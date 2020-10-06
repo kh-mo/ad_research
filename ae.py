@@ -5,23 +5,32 @@ sys.path.append(os.path.join(os.getcwd(), "datasets"))
 
 from anomalydetection.autoencoder import AutoEncoder, Encoder
 from datasets.mnist import get_dataset
-from utils import save_model
+from utils import save_model, convert_multimodal_mnist
 
 import torch
 from torch.utils.data import DataLoader
 
 if __name__ == "__main__":
-    trainset, testset = get_dataset("data")
-    train_loader = DataLoader(trainset, batch_size=256)
-    test_loader = DataLoader(testset, batch_size=256)
+    # config
+    except_class = 1
+    batch_size = 256
 
+    # data
+    trainset, testset = get_dataset("data")
+    trainset = convert_multimodal_mnist(trainset, except_class=except_class)
+    train_loader = DataLoader(trainset, batch_size=batch_size)
+    test_loader = DataLoader(testset, batch_size=batch_size)
+
+    # model
     encoder = Encoder(input_size=28*28*1, output_size=100, n_layers=3)
     decoder = Encoder(input_size=100, output_size=28*28*1, n_layers=3)
     model = AutoEncoder(encoder, decoder).to("cuda")
 
+    # loss & optimizer
     mse = torch.nn.MSELoss()
     opt = torch.optim.SGD(model.parameters(), lr=0.01)
 
+    # training
     epochs = 10
     training_loss = []
     trained_loss = []
