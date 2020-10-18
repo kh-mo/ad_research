@@ -37,3 +37,31 @@ def show_online_image(dset, except_class, amount):
     dataset.data = dataset.data[online_img_idx]
     dataset.targets = dataset.targets[online_img_idx]
     return dataset
+
+def print_score(path):
+    '''
+    저장된 모델 이름보고 score 찍기
+    '''
+    from itertools import groupby
+
+    # files = os.listdir(os.path.join(os.getcwd(), "save_model/ae"))
+    files = os.listdir(os.path.join(os.getcwd(), path))
+    group = groupby([i.split("_") for i in files], lambda x: x[0])
+
+    class_score = {"all": []}
+    for key, items in group:
+        class_score[key] = []
+        for item in items:
+            auc = float(item[-1].replace("auroc", ""))
+            class_score[key].append(auc)
+            class_score["all"].append(auc)
+        print("{} : {}({})".format(key,
+                                   round(np.average(class_score[key]), 3),
+                                   round(np.std(class_score[key]),3)
+                                   ))
+    print("All : {}({})".format(round(np.average(class_score["all"]), 3),
+                                round(np.std(class_score[key]), 3)
+                                ))
+
+
+

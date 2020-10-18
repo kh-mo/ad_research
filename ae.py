@@ -5,7 +5,7 @@ sys.path.append(os.path.join(os.getcwd(), "datasets"))
 
 from anomalydetection.autoencoder import AutoEncoder, Encoder
 from datasets.mnist import get_dataset
-from utils import save_model, convert_multimodal_mnist, show_online_image
+from utils import save_model, convert_multimodal_mnist, show_online_image, print_score
 
 import numpy as np
 from sklearn.metrics import roc_auc_score
@@ -110,3 +110,6 @@ if __name__ == "__main__":
             name = config_summary_name + "_auroc"+str(auroc)
             save_model(model, path, name)
             print("Saving Done.")
+
+            # print score
+            print_score(path)

@@ -8,5 +8,5 @@
 
 *Dataset* | *AE* |
 :---: | :---: |
-MNIST | [00.00()](model_performance_description/ae.md) |
+MNIST | [0.875(0.029)](model_performance_description/ae.md) |
 
